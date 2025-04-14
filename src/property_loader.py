@@ -47,10 +47,19 @@ class PropertyLoader:
         return rho_e
 
     def calc_mass_atten_coeff_by_atomic_number_at_energy(self, atomic_number: int, energy: float):
+        # Return NaN if energy is not in the range of the data
+        if energy < 0.0 or energy > 20.0: # Hardcoded range of the data
+            return float('NaN')
+
         atten_datum = self.get_atten_data_by_atomic_number(atomic_number)
         energies = list(atten_datum.keys())
         index_left = bisect.bisect_left(energies, energy)
-        index_right = bisect.bisect_right(energies, energy)
+        index_right = index_left + 1
+        if index_left == 0:
+            index_right = 0
+        elif index_right == len(energies):
+            index_right = index_left - 1
+
         if index_left == index_right:
             return atten_datum[energies[index_left]]
         else:
@@ -58,8 +67,8 @@ class PropertyLoader:
             energy_right = energies[index_right]
             coeff_left = atten_datum[energy_left]
             coeff_right = atten_datum[energy_right]
-            # Linear interpolation
-            coeff = coeff_left + (coeff_right - coeff_left) * (energy - energy_left) / (energy_right - energy_left)
+            proportion = (energy - energy_left) / (energy_right - energy_left)
+            coeff = coeff_left + proportion * (coeff_right - coeff_left)
             return coeff
 
     def get_all_atomic_numbers(self):
