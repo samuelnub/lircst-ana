@@ -3,7 +3,7 @@ import os
 import random
 import bisect
 
-class PropertyLoader:
+class MaterialLoader:
     def __init__(self, 
                  prop_data_path: str, 
                  atten_data_path: str,
@@ -23,10 +23,8 @@ class PropertyLoader:
         # Load compound data
         with open(self.prop_comp_data_path, 'r') as f:
             self.prop_data[0] |= json.load(f)[0]
-            print("Property data loaded, length of prop_data: ", len(self.prop_data[0]))
         with open(self.atten_comp_data_path, 'r') as f:
             self.atten_data += json.load(f)
-            print("Compound data loaded, length of atten_data: ", len(self.atten_data))
 
     def get_prop_data(self, name: str):
         raw_datum: dict = self.prop_data[0][name]

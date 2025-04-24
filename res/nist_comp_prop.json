@@ -1,5 +1,11 @@
 [
     {
+        "Nothing": {
+            "material": "Nothing",
+            "Z/A": "0.00000",
+            "density [g/cm^3]": "0.000E+00",
+            "composition": {}
+        },
         "A-150 Tissue-Equivalent Plastic": {
             "material": "A-150 Tissue-Equivalent Plastic",
             "Z/A": "0.54903",
