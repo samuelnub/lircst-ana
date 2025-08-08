@@ -89,6 +89,14 @@ class MaterialLoader:
             proportion = (energy - energy_left) / (energy_right - energy_left)
             coeff = coeff_left + proportion * (coeff_right - coeff_left)
             return coeff
+        
+    def calc_atten_coeff_at_energy(self, name: str, energy: float):
+        # Calculate mu_total (aka mass attenuation * density, to give cm^-1 so that multiplying by path length gives us a dimensionless value)
+        rho = float(self.get_prop_data(name)["density [g/cm^3]"])
+        mass_atten_coeff = self.calc_mass_atten_coeff_at_energy(name, energy)
+        if mass_atten_coeff is None or mass_atten_coeff == float('NaN'):
+            return float('NaN')
+        return mass_atten_coeff * rho
 
     def get_all_material_names(self):
         # Get all atomic numbers from the property data
