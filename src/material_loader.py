@@ -4,6 +4,9 @@ import random
 import bisect
 
 class MaterialLoader:
+
+    avogadro: float = 6.02214076e23  # Avogadro's number
+
     def __init__(self, 
                  prop_data_path: str, 
                  atten_data_path: str,
@@ -40,11 +43,10 @@ class MaterialLoader:
     def calc_electron_density(self, name: str, is_per_mole: bool = False):
         # Electron density given by the formula:
         # rho_e = (rho * N_A * Z) / A
-        avogadro = 6.02214076e23 if not is_per_mole else 1.0
         prop_data = self.get_prop_data(name)
 
         def calc_rho_e(rho: float, Z: int, A: float):
-            return (rho * avogadro * Z) / A
+            return (rho * (MaterialLoader.avogadro if not is_per_mole else 1.0) * Z) / A
         
         total_rho_e = 0.0
 
